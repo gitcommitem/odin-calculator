@@ -1,4 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono&display=swap');
+
 *{
     box-sizing: border-box;
     margin: 0;
+    font-family: 'DM Mono', monospace;
 }
+
+#page{
+    width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.hflex{
+   display:flex;
+   justify-content: space-evenly;
+}
+
+#results{
+    background-color: rgba(0, 0, 0, 0.9);
+    width: 30%;
+    border-radius: 1rem;
+    padding: 1rem;
+    color: cyan;
+}
+
+#calc-cont{
+    width: 60%;
+}
+
+#display{
+    background-color: rgba(0, 0, 0, 0.9);
+    color: cyan;
+    font-size: 4rem;
+    text-align: right;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-template-rows: repeat(5,1fr);
+}
+
+.modifer{
+    background-color: gray;
+}
+
+button{
+    padding: 1rem;
+    font-size: 3rem;
+}
+
+.three-u{
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+
+.two-u{
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.top-row{
+    grid-row-start: 2;
+}
+
+.second-row{
+    grid-row-start: 3;
+}
+
+.third-row{
+    grid-row-start: 4;
+}
+
+.bottom-row{
+    grid-row-start: 5;
+}
+
