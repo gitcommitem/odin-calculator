@@ -1,7 +1,10 @@
 const numberKey = document.querySelectorAll("button.numkey");
 const modiferKey = document.querySelectorAll("button.modifer");
-const display = document.querySelector("div#display");
+const outputDisplay = document.querySelector("div#output-display");
+const inputDisplay = document.querySelector("div#input-display");
 const resultHistory = document.querySelector("div#results");
+
+const listOfOperators = ["+","-","*","/","="];
 
 const operators = {
     add: "+",
@@ -31,30 +34,43 @@ modiferKey.forEach(function(key){
 
 //Update the display when number key is pressed
 function addNumber(key){
-    const zeroedDisplay = display.textContent === "0";
+    const zeroedDisplay = inputDisplay.textContent === "0";
+    const operatorSign = inputDisplay.textContent[0];
+    const hasOperator = inputDisplay.textContent.indexOf(...listOfOperators) === 0;
     const decimalKey = key.id === ".";
-    let hasDecimal = display.textContent.indexOf(".") !== -1;
+    let hasDecimal = inputDisplay.textContent.indexOf(".") !== -1;
 
     if(decimalKey && hasDecimal || decimalKey && zeroedDisplay){
         return
     }else if(zeroedDisplay){
-        display.textContent = key.id;
-    }else{
-        display.textContent += key.id;
+        inputDisplay.textContent = key.id;
+    }else if(hasOperator){
+        outputDisplay.textContent += operatorSign;
+        inputDisplay.textContent = key.id;
+    }
+    else{
+        inputDisplay.textContent += key.id;
     };
 };
 
-//Zero the display when clear key is pressed
+//Zero both displays when clear key is pressed
 function clearDisplay(key){
     const clearKey = key.id === "clear";
     if(clearKey){
-        display.textContent = 0;
+        inputDisplay.textContent = 0;
+        outputDisplay.textContent = "\u00A0";
     };
 };
 
 //Update display when operator key is pressed
 function addOperator(key){
     if(key.classList.contains("operator")){
-        display.textContent += operators[key.id];
-    }
-}
+        let currentInput = inputDisplay.textContent;
+        outputDisplay.textContent += currentInput;
+        equation.push(inputDisplay.textContent);
+        inputDisplay.textContent = operators[key.id];
+        equation.push(operators[key.id]);
+        console.log(equation);
+    };
+};
+

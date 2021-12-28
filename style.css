@@ -31,16 +31,26 @@
     width: 60%;
 }
 
-#display{
+.display{
     display: flex;
     justify-content: flex-end;
     white-space: nowrap;
     overflow: hidden;
     background-color: rgba(0, 0, 0, 0.9);
     color: cyan;
+    padding-right: 1rem;
+}
+
+#output-display{
+    font-size: 2rem;
+    padding-top: 1rem;
+}
+
+#input-display{
     font-size: 4rem;
-    padding: 1rem;
     margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    
 }
 
 
