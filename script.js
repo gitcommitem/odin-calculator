@@ -53,10 +53,11 @@ function addNumber(key){
     };
 };
 
-//Zero both displays when clear key is pressed
+//Zero both displays when clear key is pressed and clear equation
 function clearDisplay(key){
     const clearKey = key.id === "clear";
     if(clearKey){
+        equation.length = 0;
         inputDisplay.textContent = 0;
         outputDisplay.textContent = "\u00A0";
     };
