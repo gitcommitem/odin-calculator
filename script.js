@@ -1,13 +1,5 @@
 const listOfOperators = ["+","-","*","/","="];
 
-const operators = {
-    add: "+",
-    minus: "-",
-    times: "*",
-    divide: "/",
-    equals: "="
-}
-
 const equation = [];
 
 const numberKey = document.querySelectorAll("button.numkey");
@@ -72,10 +64,17 @@ function addOperator(key){
 
     if(key.classList.contains("operator")){
         outputDisplay.textContent += currentInput;
-        equation.push(inputDisplay.textContent);
-        inputDisplay.textContent = operators[key.id];
-        equation.push(operators[key.id]);
+        pushNumbersToEquation();
+        inputDisplay.textContent = key.id;
+        pushOperatorToEquation(key);
         console.log(equation);
     };
 };
 
+function pushNumbersToEquation(){
+    equation.push(inputDisplay.textContent);
+};
+
+function pushOperatorToEquation(key){
+    equation.push(key.id);
+};
