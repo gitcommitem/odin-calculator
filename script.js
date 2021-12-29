@@ -23,7 +23,7 @@ function addNumber(key){
     const operatorSign = inputDisplay.textContent[0];
     const hasOperator = inputDisplay.textContent.indexOf(...listOfOperators) === 0;
  
-    if(decimalKey && hasDecimal || decimalKey && zeroedDisplay){
+    if(decimalKey && hasDecimal){
         //Do not allow decimal input 
         return
     }else if(zeroedDisplay){
