@@ -14,6 +14,7 @@ const inputDisplay = document.querySelector("div#input-display");
 const resultHistory = document.querySelector("div#results");
 
 //Update the display when number key is pressed
+//BUG NOTE: decimal point registers as NaN, need to differentiate it
 function addNumber(key){
     const decimalKey = key.id === ".";
     const hasDecimal = inputDisplay.textContent.indexOf(".") !== -1;
@@ -46,7 +47,7 @@ modiferKey.forEach(function(key){
     });
 });
 
-//Zero both displays when clear key is pressed and clear equation
+//Zero both displays and equation when clear key is pressed
 function clearDisplay(key){
     const clearKey = key.id === "clear";
 
@@ -62,11 +63,20 @@ function addOperator(key){
     let currentInput = inputDisplay.textContent;
 
     if(key.classList.contains("operator")){
-        outputDisplay.textContent += currentInput;
-        pushNumbersToEquation();
-        inputDisplay.textContent = key.id;
-        pushOperatorToEquation(key);
-        console.log(equation);
+
+        //Only push numbers to equation array if they are input by user
+        if(equation.length !== 1){
+            outputDisplay.textContent += currentInput;
+            pushNumbersToEquation();
+            inputDisplay.textContent = key.id;
+            pushOperatorToEquation(key);
+            console.log(equation);
+        }else{
+            outputDisplay.textContent = currentInput;
+            inputDisplay.textContent = key.id;
+            pushOperatorToEquation(key);
+            console.log(equation);
+        }
     };
 };
 
@@ -78,10 +88,7 @@ function pushOperatorToEquation(key){
     equation.push(key.id);
 };
 
-
-//BUG NOTE: equations currently only compute properly if all the same operator
-//Mixing of operations in an equation returns as NaN at the moment
-//Ex: 6+6-3 = NaN
+//Calculate equation using PEMDAS and update display with result
 function calculateEquation(key){
     const equalKey = key.id === "=";
     let currentInput = inputDisplay.textContent;
@@ -90,59 +97,72 @@ function calculateEquation(key){
         pushNumbersToEquation();
         console.log(equation);
         outputDisplay.textContent += currentInput + "=";
-
-        for(let i = 0; i < equation.length + 1; i++){
-            let indexOfMultiply = equation.indexOf("*");
-            let indexOfDivide = equation.indexOf("/");
-            let indexOfAdd = equation.indexOf("+");
-            let indexOfMinus = equation.indexOf("-");
-                multiply(indexOfMultiply);
-                divide(indexOfDivide);
-                add(indexOfAdd);
-                minus(indexOfMinus);
-        }
-
-        console.log(equation);
+        pemdas();
         inputDisplay.textContent = `${equation}`;
-
     }
 }
 
-//BUG NOTE: multiply breaks if there are 6+ numbers in an equation
-//Ex: 2*6*5*4*3*9
-//Result shows as 720, *, 9
-//It's not reaching the last iteration --> adjust for loop...?
-//Increasing for look equation.length helps but it's only temp/up to where the break point was
-//Setting a limit like equation.length + 99 is hacky but works
-//Might be because it's also running all the other equations which eat up an iteration...?
-function multiply(indexOfMultiply){
-    if(indexOfMultiply !== -1){
-        let result = equation[indexOfMultiply - 1] * equation[indexOfMultiply + 1];
-        equation.splice(indexOfMultiply - 1, 3, result);
-    }
-}
+function pemdas(){
+    while(equation.length !==1 ){
+      let indexOfMultiply = equation.indexOf("*");
+      const hasMultiply = equation.indexOf("*") !== -1;
+      let indexOfDivide = equation.indexOf("/");
+      const hasDivide = equation.indexOf("/") !== -1;
+      let indexOfAdd = equation.indexOf("+");
+      const hasAdd = equation.indexOf("+") !== -1;
+      let indexOfMinus = equation.indexOf("-");
+      const hasMinus = equation.indexOf("-") !== -1;
 
-//BUG NOTE: divide breaks if there are 5+ numbers in an equation
-//Ex: 160/2/2/2/2/2
-//Result shows as 10,/,2
-function divide(indexOfDivide){
-    if(indexOfDivide !== -1){
-        let result = equation[indexOfDivide - 1] / equation[indexOfDivide + 1];
-        equation.splice(indexOfDivide- 1, 3, result);
+      //Run math operations using PEMDAS, with priority of left to right
+      if(hasMultiply && indexOfMultiply < indexOfDivide){
+        multiply();
+      }else if(hasDivide && indexOfDivide < indexOfMultiply){
+        divide();
+      }else if(hasAdd && indexOfAdd < indexOfMinus){
+        add();
+      }else if(hasMinus && indexOfMinus < indexOfAdd){
+        minus();
+      }
+      else{
+        multiply();
+        divide();
+        add();
+        minus();
     }
-}
+    }
+    
+  }
 
-//BUG NOTE: Add breaks if there are too many numbers in an equation
-function add(indexOfAdd){
-    if(indexOfAdd !== -1){
-        let result = equation[indexOfAdd - 1] + equation[indexOfAdd + 1];
-        equation.splice(indexOfAdd - 1, 3, result);
-    }
-}
+function multiply(){
+    let index = equation.indexOf("*");
+    let result = equation[index - 1] * equation[index + 1];
 
-function minus(indexOfMinus){
-    if(indexOfMinus !== -1){
-        let result = equation[indexOfMinus - 1] - equation[indexOfMinus + 1];
-        equation.splice(indexOfMinus - 1, 3, result);
-    }
-}
+    updateEquation(index,result);
+  }
+
+function divide(){
+    let index = equation.indexOf("/");
+    let result = equation[index - 1] / equation[index + 1];
+
+    updateEquation(index,result);
+  }
+
+function add(){
+    let index = equation.indexOf("+");
+    let result = equation[index - 1] + equation[index + 1];
+
+    updateEquation(index,result);
+  }
+
+  function minus(){
+    let index = equation.indexOf("-");
+    let result = equation[index - 1] - equation[index + 1];
+
+    updateEquation(index,result);
+  }
+
+  function updateEquation(index,result){
+    if(index !== -1){
+        equation.splice(index-1,3,result)
+        }
+  }
