@@ -67,15 +67,13 @@ function addOperator(key){
         if(equation.length !== 1){
             outputDisplay.textContent += currentInput;
             pushNumbersToEquation();
-            inputDisplay.textContent = key.id;
-            pushOperatorToEquation(key);
-            console.log(equation);
         }else{
             outputDisplay.textContent = currentInput;
-            inputDisplay.textContent = key.id;
-            pushOperatorToEquation(key);
-            console.log(equation);
         }
+
+        inputDisplay.textContent = key.id;
+        pushOperatorToEquation(key);
+        console.log(equation);
     };
 };
 
