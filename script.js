@@ -14,6 +14,7 @@ const inputDisplay = document.querySelector("div#input-display");
 const resultHistory = document.querySelector("div#results");
 
 //Update the display when number key is pressed
+//BUG NOTE: user can add numbers on to a computed result
 function addNumber(key){
     const decimalKey = key.id === ".";
     const hasDecimal = inputDisplay.textContent.indexOf(".") !== -1;
