@@ -14,13 +14,12 @@ const inputDisplay = document.querySelector("div#input-display");
 const resultHistory = document.querySelector("div#results");
 
 //Update the display when number key is pressed
-//BUG NOTE: decimal point registers as NaN, need to differentiate it
 function addNumber(key){
     const decimalKey = key.id === ".";
     const hasDecimal = inputDisplay.textContent.indexOf(".") !== -1;
     const zeroedDisplay = inputDisplay.textContent === "0";
     const operatorSign = inputDisplay.textContent[0];
-    const hasOperator = isNaN(inputDisplay.textContent) === true;
+    const hasOperator = /[-+\*\/]/.test(inputDisplay.textContent) === true;
  
     if(decimalKey && hasDecimal){
         //Do not allow decimal input 
