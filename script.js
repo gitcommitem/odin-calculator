@@ -4,7 +4,10 @@ const numberKey = document.querySelectorAll("button.numkey");
 
 numberKey.forEach(function(key){
     key.addEventListener("click",function(){
-        addNumber(key);
+        //Only allow input if the numbers displayed on screen are from user input
+        if(equation.length !== 1){
+            addNumber(key);
+        }
         console.log(key.id);
     });
 });
@@ -14,7 +17,6 @@ const inputDisplay = document.querySelector("div#input-display");
 const resultHistory = document.querySelector("div#results");
 
 //Update the display when number key is pressed
-//BUG NOTE: user can add numbers on to a computed result
 function addNumber(key){
     const decimalKey = key.id === ".";
     const hasDecimal = inputDisplay.textContent.indexOf(".") !== -1;
