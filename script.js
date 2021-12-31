@@ -88,6 +88,9 @@ function pushOperatorToEquation(key){
 };
 
 //Calculate equation using PEMDAS and update display with result
+//BUG NOTE: Will crash if equal pressed with nothing in the equation or no operator in equation
+//BUG NOTE: computations that have long decimals need to be rounded off to 3 points
+//BUG NOTE: Will crash if user tries to divide by zero
 function calculateEquation(key){
     const equalKey = key.id === "=";
     let currentInput = inputDisplay.textContent;
