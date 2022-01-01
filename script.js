@@ -21,13 +21,14 @@ function addNumber(key){
     const decimalKey = key.id === ".";
     const hasDecimal = inputDisplay.textContent.indexOf(".") !== -1;
     const zeroedDisplay = inputDisplay.textContent === "0";
+    const undefinedResult = inputDisplay.textContent === "Undefined";
     const operatorSign = inputDisplay.textContent[0];
     const hasOperator = /[-+\*\/]/.test(inputDisplay.textContent) === true;
  
     if(decimalKey && hasDecimal){
         //Do not allow decimal input 
         return
-    }else if(zeroedDisplay){
+    }else if(zeroedDisplay || undefinedResult){
         inputDisplay.textContent = key.id;
     }else if(hasOperator){
         outputDisplay.textContent += operatorSign;
@@ -42,8 +43,11 @@ const modiferKey = document.querySelectorAll("button.modifer");
 
 modiferKey.forEach(function(key){
     key.addEventListener("click",function(){
+        const undefinedResult = inputDisplay.textContent === "Undefined";
         clearDisplay(key);
-        addOperator(key);
+        if(!undefinedResult){
+            addOperator(key);
+        }
         calculateEquation(key);
         console.log(key.id);
     });
@@ -89,9 +93,7 @@ function pushOperatorToEquation(key){
 };
 
 //Calculate equation using PEMDAS and update display with result
-//BUG NOTE: Will crash if equal is pressed and array is only 1 item
 //BUG NOTE: computations that have long decimals need to be rounded off to 3 points
-//BUG NOTE: Will crash if user tries to divide by zero
 function calculateEquation(key){
     const equalKey = key.id === "=";
     let currentInput = inputDisplay.textContent;
