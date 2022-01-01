@@ -89,22 +89,29 @@ function pushOperatorToEquation(key){
 };
 
 //Calculate equation using PEMDAS and update display with result
-//BUG NOTE: Will crash if equal pressed with nothing in the equation or no operator in equation
+//BUG NOTE: Will crash if equal is pressed and array is only 1 item
 //BUG NOTE: computations that have long decimals need to be rounded off to 3 points
 //BUG NOTE: Will crash if user tries to divide by zero
 function calculateEquation(key){
     const equalKey = key.id === "=";
     let currentInput = inputDisplay.textContent;
-    const hasDivByZero = /\/*0/.test(outputDisplay.textContent) === true;
     const emptyEquation = equation.length === 0;
     const operatorOnly = /[-+\*\/]/.test(inputDisplay.textContent) === true;
+    const previousAnswer = outputDisplay.textContent.indexOf("=") !== -1;
     
-    if(equalKey && !emptyEquation && !operatorOnly){
+    if(equalKey && !emptyEquation && !previousAnswer && !operatorOnly){
         pushNumbersToEquation();
         console.log(equation);
         outputDisplay.textContent += currentInput + "=";
-        pemdas();
-        inputDisplay.textContent = `${equation}`;
+        const hasDivByZero = /(\/0).*/.test(outputDisplay.textContent) === true;
+        if(hasDivByZero){
+            equation.length = 0;
+            inputDisplay.textContent = "Undefined"
+            outputDisplay.textContent = "\u00A0";
+        }else{
+            pemdas();
+            inputDisplay.textContent = `${equation}`;
+        }
     }
 
 }
