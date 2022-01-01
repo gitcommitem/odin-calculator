@@ -95,18 +95,22 @@ function pushOperatorToEquation(key){
 function calculateEquation(key){
     const equalKey = key.id === "=";
     let currentInput = inputDisplay.textContent;
+    const hasDivByZero = /\/*0/.test(outputDisplay.textContent) === true;
+    const emptyEquation = equation.length === 0;
+    const operatorOnly = /[-+\*\/]/.test(inputDisplay.textContent) === true;
     
-    if(equalKey){
+    if(equalKey && !emptyEquation && !operatorOnly){
         pushNumbersToEquation();
         console.log(equation);
         outputDisplay.textContent += currentInput + "=";
         pemdas();
         inputDisplay.textContent = `${equation}`;
     }
+
 }
 
 function pemdas(){
-    while(equation.length !==1 ){
+    while(equation.length !==1){
       let indexOfMultiply = equation.indexOf("*");
       const hasMultiply = equation.indexOf("*") !== -1;
       let indexOfDivide = equation.indexOf("/");
