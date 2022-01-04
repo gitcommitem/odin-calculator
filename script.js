@@ -7,8 +7,7 @@ numberKey.forEach(function(key){
         //Only allow input if the numbers displayed on screen are from user input
         if(equation.length !== 1){
             addNumber(key);
-        }
-        console.log(key.id);
+        };
     });
 });
 
@@ -78,11 +77,10 @@ function addOperator(key){
             pushNumbersToEquation();
         }else{
             outputDisplay.textContent = currentInput;
-        }
+        };
 
         inputDisplay.textContent = key.id;
         pushOperatorToEquation(key);
-        console.log(equation);
     };
 };
 
@@ -104,7 +102,6 @@ function calculateEquation(key){
     
     if(equalKey && !emptyEquation && !previousAnswer && !operatorOnly){
         pushNumbersToEquation();
-        console.log(equation);
         outputDisplay.textContent += currentInput + "=";
         const hasDivByZero = /(\/0).*/.test(outputDisplay.textContent) === true;
         
@@ -115,10 +112,10 @@ function calculateEquation(key){
         }else{
             pemdas();
             displayAnswer();
-        }
-    }
+        };
+    };
 
-}
+};
 
 function pemdas(){
     while(equation.length !==1){
@@ -146,49 +143,48 @@ function pemdas(){
         divide();
         add();
         minus();
-    }
-    }
+    };
+    };
     
-  }
+  };
 
 function multiply(){
     let index = equation.indexOf("*");
     let result = equation[index - 1] * equation[index + 1];
 
     updateEquation(index,result);
-  }
+  };
 
 function divide(){
     let index = equation.indexOf("/");
     let result = equation[index - 1] / equation[index + 1];
 
     updateEquation(index,result);
-  }
+  };
 
 function add(){
     let index = equation.indexOf("+");
     let result = equation[index - 1] + equation[index + 1];
 
     updateEquation(index,result);
-  }
+  };
 
   function minus(){
     let index = equation.indexOf("-");
     let result = equation[index - 1] - equation[index + 1];
 
     updateEquation(index,result);
-  }
+  };
 
   function updateEquation(index,result){
     if(index !== -1){
         equation.splice(index-1,3,result)
-        }
-  }
+        };
+  };
 
   function displayAnswer(){
     const hasDecimal = /(\.)/.test(equation[0]) === true;
     let answer = equation[0];
 
     hasDecimal ? inputDisplay.textContent = `${answer.toFixed(3)}` : inputDisplay.textContent = `${answer}`;
-
   };
