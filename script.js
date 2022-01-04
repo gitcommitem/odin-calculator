@@ -189,10 +189,6 @@ function add(){
     const hasDecimal = /(\.)/.test(equation[0]) === true;
     let answer = equation[0];
 
-    if(hasDecimal){
-        inputDisplay.textContent = `${answer.toFixed(3)}`;
-    }
-    else{
-        inputDisplay.textContent = `${answer}`;
-    }
-  }
+    hasDecimal ? inputDisplay.textContent = `${answer.toFixed(3)}` : inputDisplay.textContent = `${answer}`;
+
+  };
