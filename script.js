@@ -67,8 +67,10 @@ function clearDisplay(key){
 //Update display when operator key is pressed
 function addOperator(key){
     let currentInput = inputDisplay.textContent;
+    const operatorKey = key.classList.contains("operator");
+    const hasOperator = /[-+\*\/]/.test(inputDisplay.textContent) === true;
 
-    if(key.classList.contains("operator")){
+    if(operatorKey && !hasOperator){
 
         //Only push numbers to equation array if they are input by user
         if(equation.length !== 1){
