@@ -93,7 +93,6 @@ function pushOperatorToEquation(key){
 };
 
 //Calculate equation using PEMDAS and update display with result
-//BUG NOTE: computations that have long decimals need to be rounded off to 3 points
 function calculateEquation(key){
     const equalKey = key.id === "=";
     let currentInput = inputDisplay.textContent;
@@ -106,13 +105,14 @@ function calculateEquation(key){
         console.log(equation);
         outputDisplay.textContent += currentInput + "=";
         const hasDivByZero = /(\/0).*/.test(outputDisplay.textContent) === true;
+        
         if(hasDivByZero){
             equation.length = 0;
             inputDisplay.textContent = "Undefined"
             outputDisplay.textContent = "\u00A0";
         }else{
             pemdas();
-            inputDisplay.textContent = `${equation}`;
+            displayAnswer();
         }
     }
 
@@ -181,4 +181,16 @@ function add(){
     if(index !== -1){
         equation.splice(index-1,3,result)
         }
+  }
+
+  function displayAnswer(){
+    const hasDecimal = /(\.)/.test(equation[0]) === true;
+    let answer = equation[0];
+
+    if(hasDecimal){
+        inputDisplay.textContent = `${answer.toFixed(3)}`;
+    }
+    else{
+        inputDisplay.textContent = `${answer}`;
+    }
   }
