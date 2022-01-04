@@ -48,7 +48,6 @@ modiferKey.forEach(function(key){
             addOperator(key);
         }
         calculateEquation(key);
-        console.log(key.id);
     });
 });
 
