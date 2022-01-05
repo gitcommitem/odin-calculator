@@ -63,6 +63,8 @@ function clearDisplay(key){
 };
 
 //Update display when operator key is pressed
+//BUG NOTE: operators can be added after a decimal is input
+//Check if each decimal has a number after it
 function addOperator(key){
     let currentInput = inputDisplay.textContent;
     const operatorKey = key.classList.contains("operator");
@@ -92,6 +94,7 @@ function pushOperatorToEquation(key){
 };
 
 //Calculate equation using PEMDAS and update display with result
+//BUG NOTE: if user forgets to put number after decimal, calculation can still be run causing a NaN error
 function calculateEquation(key){
     const equalKey = key.id === "=";
     let currentInput = inputDisplay.textContent;
