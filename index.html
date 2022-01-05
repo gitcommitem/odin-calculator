@@ -11,17 +11,24 @@
 <body>
     <div id="page">
         <div class="hflex">
-            <div id="results">2+2=4</div>
+            <div id="results">
+                <div class="result-item">
+                    <div class="result-equation">2+2=</div>
+                    <div class="result-answer">4</div>
+                </div>
+            </div>
             <div id="calc-cont">
-                <div class="display" id="output-display">&nbsp;</div>
+                <div id="display-cont">
+                    <div class="display" id="output-display">&nbsp;</div>
                     <div class="display" id="input-display">0</div>
+                </div>
                 <section class="grid">
                     <button class="modifer three-u" id="clear">C</button>
                     <button class="modifer operator" id="/">/</button>
                     <button class="modifer operator" id="*">*</button>
                     <button class="modifer operator" id="-">-</button>
                     <button class="modifer operator" id="+">+</button>
-                    <button class="modifer" id="=">=</button>
+                    <button class="modifer equal" id="=">=</button>
                     <button class="numkey third-row" id="1">1</button>
                     <button class="numkey third-row" id="2">2</button>
                     <button class="numkey third-row" id="3">3</button>
