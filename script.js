@@ -12,6 +12,7 @@ const outputDisplay = document.querySelector("div#output-display");
 const inputDisplay = document.querySelector("div#input-display");
 
 //Update the display when number key is pressed
+//BUG NOTE: sometimes when an answer has a decimal, it does not register as being true, and so user can add numbers onto the answer
 function addNumber(key){
     const decimalKey = key.id === ".";
     const hasDecimal = inputDisplay.textContent.indexOf(".") !== -1;
