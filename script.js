@@ -13,7 +13,6 @@ numberKey.forEach(function(key){
 
 const outputDisplay = document.querySelector("div#output-display");
 const inputDisplay = document.querySelector("div#input-display");
-const resultHistory = document.querySelector("div#results");
 
 //Update the display when number key is pressed
 function addNumber(key){
@@ -65,6 +64,7 @@ function clearDisplay(key){
 //Update display when operator key is pressed
 //BUG NOTE: operators can be added after a decimal is input
 //Check if each decimal has a number after it
+//BUG NOTE: operators aren't able to be pressed when an answer comes out as a negative
 function addOperator(key){
     let currentInput = inputDisplay.textContent;
     const operatorKey = key.classList.contains("operator");
@@ -114,6 +114,7 @@ function calculateEquation(key){
         }else{
             pemdas();
             displayAnswer();
+            updateResultHistory();
         };
     };
 
@@ -190,3 +191,24 @@ function add(){
 
     hasDecimal ? inputDisplay.textContent = `${answer.toFixed(3)}` : inputDisplay.textContent = `${answer}`;
   };
+
+  const resultHistory = document.querySelector("div#results");
+
+  function updateResultHistory(){
+    let finalEquation = document.createTextNode(`${outputDisplay.textContent}`);
+    let answer = document.createTextNode(`${inputDisplay.textContent}`);
+    let prevResult = resultHistory.firstChild;
+    const newResult = document.createElement("div");
+    const equationDiv = document.createElement("div");
+    const answerDiv = document.createElement("div");
+
+    newResult.classList.add("result-item");
+    equationDiv.classList.add("result-equation");
+    equationDiv.appendChild(finalEquation);
+    answerDiv.classList.add("result-answer");
+    answerDiv.appendChild(answer);
+
+    resultHistory.insertBefore(newResult,prevResult);
+    newResult.append(equationDiv,answerDiv);
+
+  }
