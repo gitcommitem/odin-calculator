@@ -4,10 +4,7 @@ const numberKey = document.querySelectorAll("button.numkey");
 
 numberKey.forEach(function(key){
     key.addEventListener("click",function(){
-        //Only allow input if the numbers displayed on screen are from user input
-        if(equation.length !== 1){
             addNumber(key);
-        };
     });
 });
 
@@ -20,13 +17,18 @@ function addNumber(key){
     const hasDecimal = inputDisplay.textContent.indexOf(".") !== -1;
     const zeroedDisplay = inputDisplay.textContent === "0";
     const undefinedResult = inputDisplay.textContent === "Undefined";
+    const isAnswer = inputDisplay.textContent.indexOf(equation[0]) !== -1;
     const operatorSign = inputDisplay.textContent[0];
     const hasOperator = /[-+\*\/]/.test(inputDisplay.textContent) === true;
+ 
  
     if(decimalKey && hasDecimal){
         //Do not allow decimal input 
         return
     }else if(zeroedDisplay || undefinedResult){
+        inputDisplay.textContent = key.id;
+    }else if(isAnswer){
+        outputDisplay.textContent = "\u00A0";
         inputDisplay.textContent = key.id;
     }else if(hasOperator){
         outputDisplay.textContent += operatorSign;
