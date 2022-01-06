@@ -11,17 +11,15 @@ numberKey.forEach(function(key){
 const outputDisplay = document.querySelector("div#output-display");
 const inputDisplay = document.querySelector("div#input-display");
 
+let isAnswerDisplayed = false
+
 //Update the display when number key is pressed
-//BUG NOTE: sometimes when an answer has a decimal, it does not register as being true, and so user can add numbers onto the answer
-//BUG REASON: display rounds to 3 decimals, while equation answer remains the full decimal length
 function addNumber(key){
     const decimalKey = key.id === ".";
     const hasDecimal = inputDisplay.textContent.indexOf(".") !== -1;
 
     const zeroedDisplay = inputDisplay.textContent === "0";
     const undefinedResult = inputDisplay.textContent === "Undefined";
-
-    const isAnswer = inputDisplay.textContent.indexOf(equation[0]) !== -1;
 
     const operatorSign = inputDisplay.textContent[0];
     const hasOperator = /[-+\*\/]/.test(inputDisplay.textContent) === true;
@@ -32,10 +30,11 @@ function addNumber(key){
         return
     }else if(zeroedDisplay || undefinedResult){
         inputDisplay.textContent = key.id;
-    }else if(isAnswer){
+    }else if(isAnswerDisplayed === true){
         equation.length = 0;
         outputDisplay.textContent = "\u00A0";
         inputDisplay.textContent = key.id;
+        isAnswerDisplayed = false;
     }else if(hasOperator){
         outputDisplay.textContent += operatorSign;
         inputDisplay.textContent = key.id;
@@ -66,6 +65,7 @@ function clearDisplay(key){
         equation.length = 0;
         inputDisplay.textContent = 0;
         outputDisplay.textContent = "\u00A0";
+        isAnswerDisplayed = false;
     };
 };
 
@@ -89,6 +89,7 @@ function addOperator(key){
         };
 
         inputDisplay.textContent = key.id;
+        isAnswerDisplayed = false;
         pushOperatorToEquation(key);
     };
 };
@@ -201,6 +202,7 @@ function add(){
     let answer = equation[0];
 
     hasDecimal ? inputDisplay.textContent = `${answer.toFixed(3)}` : inputDisplay.textContent = `${answer}`;
+    isAnswerDisplayed = true;
   };
 
   const resultHistory = document.querySelector("div#results");
