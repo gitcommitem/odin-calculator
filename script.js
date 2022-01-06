@@ -11,7 +11,8 @@ numberKey.forEach(function(key){
 const outputDisplay = document.querySelector("div#output-display");
 const inputDisplay = document.querySelector("div#input-display");
 
-let isAnswerDisplayed = false
+let isAnswerDisplayed = false;
+let isDecimalCurrentInput = false;
 
 //Update the display when number key is pressed
 function addNumber(key){
@@ -25,22 +26,35 @@ function addNumber(key){
     const hasOperator = /[-+\*\/]/.test(inputDisplay.textContent) === true;
  
  
-    if(decimalKey && hasDecimal){
+    if(decimalKey && !hasDecimal && !hasOperator){
+        inputDisplay.textContent += key.id;
+        isDecimalCurrentInput = true;
+    } 
+    else if(decimalKey && !hasDecimal && hasOperator){
+        outputDisplay.textContent += operatorSign;
+        inputDisplay.textContent = key.id;
+        isDecimalCurrentInput = true;
+    }
+    else if(decimalKey && hasDecimal){
         //Do not allow decimal input 
         return
-    }else if(zeroedDisplay || undefinedResult){
+    }
+    else if(zeroedDisplay || undefinedResult){
         inputDisplay.textContent = key.id;
-    }else if(isAnswerDisplayed === true){
+    }
+    else if(isAnswerDisplayed === true){
         equation.length = 0;
         outputDisplay.textContent = "\u00A0";
         inputDisplay.textContent = key.id;
         isAnswerDisplayed = false;
-    }else if(hasOperator){
+    }
+    else if(hasOperator){
         outputDisplay.textContent += operatorSign;
         inputDisplay.textContent = key.id;
     }
     else{
         inputDisplay.textContent += key.id;
+        isDecimalCurrentInput = false;
     };
 };
 
@@ -66,6 +80,7 @@ function clearDisplay(key){
         inputDisplay.textContent = 0;
         outputDisplay.textContent = "\u00A0";
         isAnswerDisplayed = false;
+        isDecimalCurrentInput = false;
     };
 };
 
@@ -78,10 +93,10 @@ function addOperator(key){
     const operatorKey = key.classList.contains("operator");
     const hasOperator = /[-+\*\/]/.test(inputDisplay.textContent) === true;
 
-    if(operatorKey && !hasOperator){
+    if(operatorKey && !hasOperator && isDecimalCurrentInput === false){
 
         //Only push numbers to equation array if they are input by user
-        if(equation.length !== 1){
+        if(isAnswerDisplayed === false){
             outputDisplay.textContent += currentInput;
             pushNumbersToEquation();
         }else{
@@ -103,7 +118,6 @@ function pushOperatorToEquation(key){
 };
 
 //Calculate equation using PEMDAS and update display with result
-//BUG NOTE: if user forgets to put number after decimal, calculation can still be run causing a NaN error
 function calculateEquation(key){
     const equalKey = key.id === "=";
     let currentInput = inputDisplay.textContent;
@@ -111,7 +125,7 @@ function calculateEquation(key){
     const operatorOnly = /[-+\*\/]/.test(inputDisplay.textContent) === true;
     const previousAnswer = outputDisplay.textContent.indexOf("=") !== -1;
     
-    if(equalKey && !emptyEquation && !previousAnswer && !operatorOnly){
+    if(equalKey && !emptyEquation && !previousAnswer && !operatorOnly && isDecimalCurrentInput === false){
         pushNumbersToEquation();
         outputDisplay.textContent += currentInput + "=";
         const hasDivByZero = /(\/0).*/.test(outputDisplay.textContent) === true;
