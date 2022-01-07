@@ -63,10 +63,13 @@ const modiferKey = document.querySelectorAll("button.modifer");
 modiferKey.forEach(function(key){
     key.addEventListener("click",function(){
         const undefinedResult = inputDisplay.textContent === "Undefined";
+
         clearDisplay(key);
+
         if(!undefinedResult){
             addOperator(key);
         }
+
         calculateEquation(key);
     });
 });
@@ -85,11 +88,10 @@ function clearDisplay(key){
 };
 
 //Update display when operator key is pressed
-//BUG NOTE: operators can be added after a decimal is input
-//Check if each decimal has a number after it
 //BUG NOTE: operators aren't able to be pressed when an answer comes out as a negative
 function addOperator(key){
     let currentInput = inputDisplay.textContent;
+    
     const operatorKey = key.classList.contains("operator");
     const hasOperator = /[-+\*\/]/.test(inputDisplay.textContent) === true;
 
@@ -119,8 +121,9 @@ function pushOperatorToEquation(key){
 
 //Calculate equation using PEMDAS and update display with result
 function calculateEquation(key){
-    const equalKey = key.id === "=";
     let currentInput = inputDisplay.textContent;
+
+    const equalKey = key.id === "=";
     const emptyEquation = equation.length === 0;
     const operatorOnly = /[-+\*\/]/.test(inputDisplay.textContent) === true;
     const previousAnswer = outputDisplay.textContent.indexOf("=") !== -1;
@@ -157,14 +160,17 @@ function pemdas(){
       let indexOfMinus = equation.indexOf("-");
       const hasMinus = equation.indexOf("-") !== -1;
 
-      //Run math operations using PEMDAS, with priority of left to right
+      //Run math operations using PEMDAS logic
       if(hasMultiply && indexOfMultiply < indexOfDivide){
         multiply();
-      }else if(hasDivide && indexOfDivide < indexOfMultiply){
+      }
+      else if(hasDivide && indexOfDivide < indexOfMultiply){
         divide();
-      }else if(hasAdd && indexOfAdd < indexOfMinus){
+      }
+      else if(hasAdd && indexOfAdd < indexOfMinus){
         add();
-      }else if(hasMinus && indexOfMinus < indexOfAdd){
+      }
+      else if(hasMinus && indexOfMinus < indexOfAdd){
         minus();
       }
       else{
@@ -212,8 +218,8 @@ function add(){
   };
 
   function displayAnswer(){
-    const hasDecimal = /(\.)/.test(equation[0]) === true;
     let answer = equation[0];
+    const hasDecimal = /(\.)/.test(equation[0]) === true;
 
     hasDecimal ? inputDisplay.textContent = `${answer.toFixed(3)}` : inputDisplay.textContent = `${answer}`;
     isAnswerDisplayed = true;
@@ -225,13 +231,16 @@ function add(){
     let finalEquation = document.createTextNode(`${outputDisplay.textContent}`);
     let answer = document.createTextNode(`${inputDisplay.textContent}`);
     let prevResult = resultHistory.firstChild;
+
     const newResult = document.createElement("div");
     const equationDiv = document.createElement("div");
     const answerDiv = document.createElement("div");
 
     newResult.classList.add("result-item");
+
     equationDiv.classList.add("result-equation");
     equationDiv.appendChild(finalEquation);
+
     answerDiv.classList.add("result-answer");
     answerDiv.appendChild(answer);
 
