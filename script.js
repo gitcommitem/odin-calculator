@@ -128,10 +128,10 @@ function calculateEquation(){
 
     const emptyEquation = equation.length === 0;
     const operatorOnly = /[-+\*\/]/.test(inputDisplay.textContent) === true;
-    const previousAnswer = outputDisplay.textContent.indexOf("=") !== -1;
     
-    if(!emptyEquation && !previousAnswer && !operatorOnly && isDecimalCurrentInput === false){
+    if(!emptyEquation && isAnswerDisplayed === false && !operatorOnly && isDecimalCurrentInput === false){
         pushNumbersToEquation();
+        
         outputDisplay.textContent += currentInput + "=";
         const hasDivByZero = /(\/0).*/.test(outputDisplay.textContent) === true;
         
