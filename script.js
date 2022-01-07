@@ -4,7 +4,15 @@ const numberKey = document.querySelectorAll("button.numkey");
 
 numberKey.forEach(function(key){
     key.addEventListener("click",function(){
+        const decimalKey = key.id === ".";
+
+        if(decimalKey){
+            addDecimal(key);
+        };
+
+        if(!decimalKey){
             addNumber(key);
+        }
     });
 });
 
@@ -17,30 +25,12 @@ let isOperatorCurrentInput = false;
 
 //Update the display when number key is pressed
 function addNumber(key){
-    const decimalKey = key.id === ".";
-    const hasDecimal = inputDisplay.textContent.indexOf(".") !== -1;
-
     const zeroedDisplay = inputDisplay.textContent === "0";
     const undefinedResult = inputDisplay.textContent === "Undefined";
 
     const operatorSign = inputDisplay.textContent[0];
- 
- 
-    if(decimalKey && !hasDecimal && isOperatorCurrentInput === false){
-        inputDisplay.textContent += key.id;
-        isDecimalCurrentInput = true;
-    } 
-    else if(decimalKey && !hasDecimal && isOperatorCurrentInput === true){
-        outputDisplay.textContent += operatorSign;
-        inputDisplay.textContent = key.id;
-        isDecimalCurrentInput = true;
-        isOperatorCurrentInput = false;
-    }
-    else if(decimalKey && hasDecimal){
-        //Do not allow decimal input 
-        return
-    }
-    else if(zeroedDisplay || undefinedResult){
+     
+    if(zeroedDisplay || undefinedResult){
         inputDisplay.textContent = key.id;
     }
     else if(isAnswerDisplayed === true){
@@ -58,6 +48,39 @@ function addNumber(key){
         inputDisplay.textContent += key.id;
         isDecimalCurrentInput = false;
     };
+};
+
+function addDecimal(key){
+    const hasDecimal = inputDisplay.textContent.indexOf(".") !== -1;
+
+    const zeroedDisplay = inputDisplay.textContent === "0";
+    const undefinedResult = inputDisplay.textContent === "Undefined";
+
+    const operatorSign = inputDisplay.textContent[0];
+
+    if(hasDecimal && isAnswerDisplayed === false){
+        //Do not allow decimal input
+        return
+    }
+
+    if(zeroedDisplay || undefinedResult){
+        inputDisplay.textContent = key.id;
+    } 
+    else if(isAnswerDisplayed === true){
+        equation.length = 0;
+        outputDisplay.textContent = "\u00A0";
+        inputDisplay.textContent = key.id;
+        isAnswerDisplayed = false;
+    }
+    else if(isOperatorCurrentInput === true){
+        outputDisplay.textContent += operatorSign;
+        inputDisplay.textContent = key.id;
+        isOperatorCurrentInput = false;
+    }
+    else{
+        inputDisplay.textContent += key.id;
+    };
+    isDecimalCurrentInput = true;
 };
 
 const modiferKey = document.querySelectorAll("button.modifer");
