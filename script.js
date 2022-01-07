@@ -62,46 +62,49 @@ const modiferKey = document.querySelectorAll("button.modifer");
 
 modiferKey.forEach(function(key){
     key.addEventListener("click",function(){
-        const undefinedResult = inputDisplay.textContent === "Undefined";
+        const clearKey = key.id === "clear";
+        const operatorKey = key.classList.contains("operator");
+        const equalKey = key.id === "=";
 
-        clearDisplay(key);
+        if(clearKey){
+            clearDisplay();
+        };
 
-        if(!undefinedResult){
+        if(operatorKey){
             addOperator(key);
-        }
+        };
 
-        calculateEquation(key);
+        if(equalKey){
+            calculateEquation();
+        };
     });
 });
 
 //Zero both displays and equation when clear key is pressed
-function clearDisplay(key){
-    const clearKey = key.id === "clear";
-
-    if(clearKey){
+function clearDisplay(){
         equation.length = 0;
         inputDisplay.textContent = 0;
         outputDisplay.textContent = "\u00A0";
         isAnswerDisplayed = false;
         isDecimalCurrentInput = false;
-    };
 };
 
 //Update display when operator key is pressed
 //BUG NOTE: operators aren't able to be pressed when an answer comes out as a negative
 function addOperator(key){
     let currentInput = inputDisplay.textContent;
-    
-    const operatorKey = key.classList.contains("operator");
+
+    const undefinedResult = inputDisplay.textContent === "Undefined";
     const hasOperator = /[-+\*\/]/.test(inputDisplay.textContent) === true;
 
-    if(operatorKey && !hasOperator && isDecimalCurrentInput === false){
+    if(!undefinedResult && !hasOperator && isDecimalCurrentInput === false){
 
         //Only push numbers to equation array if they are input by user
         if(isAnswerDisplayed === false){
             outputDisplay.textContent += currentInput;
             pushNumbersToEquation();
-        }else{
+        }
+        else{
             outputDisplay.textContent = currentInput;
         };
 
@@ -120,15 +123,14 @@ function pushOperatorToEquation(key){
 };
 
 //Calculate equation using PEMDAS and update display with result
-function calculateEquation(key){
+function calculateEquation(){
     let currentInput = inputDisplay.textContent;
 
-    const equalKey = key.id === "=";
     const emptyEquation = equation.length === 0;
     const operatorOnly = /[-+\*\/]/.test(inputDisplay.textContent) === true;
     const previousAnswer = outputDisplay.textContent.indexOf("=") !== -1;
     
-    if(equalKey && !emptyEquation && !previousAnswer && !operatorOnly && isDecimalCurrentInput === false){
+    if(!emptyEquation && !previousAnswer && !operatorOnly && isDecimalCurrentInput === false){
         pushNumbersToEquation();
         outputDisplay.textContent += currentInput + "=";
         const hasDivByZero = /(\/0).*/.test(outputDisplay.textContent) === true;
@@ -137,7 +139,8 @@ function calculateEquation(key){
             equation.length = 0;
             inputDisplay.textContent = "Undefined"
             outputDisplay.textContent = "\u00A0";
-        }else{
+        }
+        else{
             pemdas();
             displayAnswer();
             updateResultHistory();
@@ -214,7 +217,7 @@ function add(){
   function updateEquation(index,result){
     if(index !== -1){
         equation.splice(index-1,3,result)
-        };
+    };
   };
 
   function displayAnswer(){
