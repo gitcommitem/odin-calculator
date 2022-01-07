@@ -13,6 +13,7 @@ const inputDisplay = document.querySelector("div#input-display");
 
 let isAnswerDisplayed = false;
 let isDecimalCurrentInput = false;
+let isOperatorCurrentInput = false;
 
 //Update the display when number key is pressed
 function addNumber(key){
@@ -23,17 +24,17 @@ function addNumber(key){
     const undefinedResult = inputDisplay.textContent === "Undefined";
 
     const operatorSign = inputDisplay.textContent[0];
-    const hasOperator = /[-+\*\/]/.test(inputDisplay.textContent) === true;
  
  
-    if(decimalKey && !hasDecimal && !hasOperator){
+    if(decimalKey && !hasDecimal && isOperatorCurrentInput === false){
         inputDisplay.textContent += key.id;
         isDecimalCurrentInput = true;
     } 
-    else if(decimalKey && !hasDecimal && hasOperator){
+    else if(decimalKey && !hasDecimal && isOperatorCurrentInput === true){
         outputDisplay.textContent += operatorSign;
         inputDisplay.textContent = key.id;
         isDecimalCurrentInput = true;
+        isOperatorCurrentInput = false;
     }
     else if(decimalKey && hasDecimal){
         //Do not allow decimal input 
@@ -48,9 +49,10 @@ function addNumber(key){
         inputDisplay.textContent = key.id;
         isAnswerDisplayed = false;
     }
-    else if(hasOperator){
+    else if(isOperatorCurrentInput === true){
         outputDisplay.textContent += operatorSign;
         inputDisplay.textContent = key.id;
+        isOperatorCurrentInput = false;
     }
     else{
         inputDisplay.textContent += key.id;
@@ -87,17 +89,16 @@ function clearDisplay(){
         outputDisplay.textContent = "\u00A0";
         isAnswerDisplayed = false;
         isDecimalCurrentInput = false;
+        isOperatorCurrentInput = false;
 };
 
 //Update display when operator key is pressed
-//BUG NOTE: operators aren't able to be pressed when an answer comes out as a negative
 function addOperator(key){
     let currentInput = inputDisplay.textContent;
 
     const undefinedResult = inputDisplay.textContent === "Undefined";
-    const hasOperator = /[-+\*\/]/.test(inputDisplay.textContent) === true;
 
-    if(!undefinedResult && !hasOperator && isDecimalCurrentInput === false){
+    if(!undefinedResult && isOperatorCurrentInput === false && isDecimalCurrentInput === false){
 
         //Only push numbers to equation array if they are input by user
         if(isAnswerDisplayed === false){
@@ -109,6 +110,7 @@ function addOperator(key){
         };
 
         inputDisplay.textContent = key.id;
+        isOperatorCurrentInput = true;
         isAnswerDisplayed = false;
         pushOperatorToEquation(key);
     };
@@ -127,9 +129,8 @@ function calculateEquation(){
     let currentInput = inputDisplay.textContent;
 
     const emptyEquation = equation.length === 0;
-    const operatorOnly = /[-+\*\/]/.test(inputDisplay.textContent) === true;
     
-    if(!emptyEquation && isAnswerDisplayed === false && !operatorOnly && isDecimalCurrentInput === false){
+    if(!emptyEquation && isAnswerDisplayed === false && isOperatorCurrentInput === false && isDecimalCurrentInput === false){
         pushNumbersToEquation();
         
         outputDisplay.textContent += currentInput + "=";
