@@ -12,7 +12,7 @@ numberKey.forEach(function(key){
 
         if(!decimalKey){
             addNumber(key);
-        }
+        };
     });
 });
 
@@ -23,64 +23,66 @@ let isAnswerDisplayed = false;
 let isDecimalCurrentInput = false;
 let isOperatorCurrentInput = false;
 
-//Update the display when number key is pressed
-function addNumber(key){
-    const zeroedDisplay = inputDisplay.textContent === "0";
-    const undefinedResult = inputDisplay.textContent === "Undefined";
-
-    const operatorSign = inputDisplay.textContent[0];
-     
-    if(zeroedDisplay || undefinedResult){
-        inputDisplay.textContent = key.id;
-    }
-    else if(isAnswerDisplayed === true){
-        equation.length = 0;
-        outputDisplay.textContent = "\u00A0";
-        inputDisplay.textContent = key.id;
-        isAnswerDisplayed = false;
-    }
-    else if(isOperatorCurrentInput === true){
-        outputDisplay.textContent += operatorSign;
-        inputDisplay.textContent = key.id;
-        isOperatorCurrentInput = false;
-    }
-    else{
-        inputDisplay.textContent += key.id;
-        isDecimalCurrentInput = false;
-    };
-};
-
 function addDecimal(key){
     const hasDecimal = inputDisplay.textContent.indexOf(".") !== -1;
 
     const zeroedDisplay = inputDisplay.textContent === "0";
     const undefinedResult = inputDisplay.textContent === "Undefined";
 
-    const operatorSign = inputDisplay.textContent[0];
-
     if(hasDecimal && isAnswerDisplayed === false){
         //Do not allow decimal input
         return
-    }
+    };
 
     if(zeroedDisplay || undefinedResult){
         inputDisplay.textContent = key.id;
     } 
     else if(isAnswerDisplayed === true){
-        equation.length = 0;
-        outputDisplay.textContent = "\u00A0";
-        inputDisplay.textContent = key.id;
-        isAnswerDisplayed = false;
+        replaceAnswer(key);
     }
     else if(isOperatorCurrentInput === true){
-        outputDisplay.textContent += operatorSign;
-        inputDisplay.textContent = key.id;
-        isOperatorCurrentInput = false;
+        replaceOperator(key);
     }
     else{
         inputDisplay.textContent += key.id;
     };
+
     isDecimalCurrentInput = true;
+};
+
+function replaceAnswer(key){
+    equation.length = 0;
+    outputDisplay.textContent = "\u00A0";
+    inputDisplay.textContent = key.id;
+    isAnswerDisplayed = false;
+};
+
+function replaceOperator(key){
+    const operatorSign = inputDisplay.textContent[0];
+
+    outputDisplay.textContent += operatorSign;
+    inputDisplay.textContent = key.id;
+    isOperatorCurrentInput = false;
+};
+
+//Update the display when number key is pressed
+function addNumber(key){
+    const zeroedDisplay = inputDisplay.textContent === "0";
+    const undefinedResult = inputDisplay.textContent === "Undefined";
+     
+    if(zeroedDisplay || undefinedResult){
+        inputDisplay.textContent = key.id;
+    }
+    else if(isAnswerDisplayed === true){
+        replaceAnswer(key);
+    }
+    else if(isOperatorCurrentInput === true){
+        replaceOperator(key);
+    }
+    else{
+        inputDisplay.textContent += key.id;
+        isDecimalCurrentInput = false;
+    };
 };
 
 const modiferKey = document.querySelectorAll("button.modifer");
@@ -274,4 +276,4 @@ function add(){
     resultHistory.insertBefore(newResult,prevResult);
     newResult.append(equationDiv,answerDiv);
 
-  }
+  };
