@@ -25,7 +25,6 @@ let isOperatorCurrentInput = false;
 
 function addDecimal(key){
     const hasDecimal = inputDisplay.textContent.indexOf(".") !== -1;
-
     const zeroedDisplay = inputDisplay.textContent === "0";
     const undefinedResult = inputDisplay.textContent === "Undefined";
 
@@ -65,7 +64,6 @@ function replaceOperator(key){
     isOperatorCurrentInput = false;
 };
 
-//Update the display when number key is pressed
 function addNumber(key){
     const zeroedDisplay = inputDisplay.textContent === "0";
     const undefinedResult = inputDisplay.textContent === "Undefined";
@@ -94,7 +92,7 @@ modiferKey.forEach(function(key){
         const equalKey = key.id === "=";
 
         if(clearKey){
-            clearDisplay();
+            clearAll();
         };
 
         if(operatorKey){
@@ -107,8 +105,7 @@ modiferKey.forEach(function(key){
     });
 });
 
-//Zero both displays and equation when clear key is pressed
-function clearDisplay(){
+function clearAll(){
         equation.length = 0;
         inputDisplay.textContent = 0;
         outputDisplay.textContent = "\u00A0";
@@ -117,7 +114,6 @@ function clearDisplay(){
         isOperatorCurrentInput = false;
 };
 
-//Update display when operator key is pressed
 function addOperator(key){
     let currentInput = inputDisplay.textContent;
 
@@ -149,7 +145,6 @@ function pushOperatorToEquation(key){
     equation.push(key.id);
 };
 
-//Calculate equation using PEMDAS and update display with result
 function calculateEquation(){
     let currentInput = inputDisplay.textContent;
 
