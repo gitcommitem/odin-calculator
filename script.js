@@ -33,10 +33,10 @@ function addDecimal(key){
         return
     };
 
-    if(zeroedDisplay || undefinedResult){
+    if(undefinedResult){
         inputDisplay.textContent = key.id;
     } 
-    else if(isAnswerDisplayed === true){
+    else if(zeroedDisplay || isAnswerDisplayed === true){
         replaceAnswer(key);
     }
     else if(isOperatorCurrentInput === true){
@@ -68,10 +68,10 @@ function addNumber(key){
     const zeroedDisplay = inputDisplay.textContent === "0";
     const undefinedResult = inputDisplay.textContent === "Undefined";
      
-    if(zeroedDisplay || undefinedResult){
+    if(undefinedResult){
         inputDisplay.textContent = key.id;
     }
-    else if(isAnswerDisplayed === true){
+    else if(zeroedDisplay || isAnswerDisplayed === true){
         replaceAnswer(key);
     }
     else if(isOperatorCurrentInput === true){
@@ -147,10 +147,8 @@ function pushOperatorToEquation(key){
 
 function calculateEquation(){
     let currentInput = inputDisplay.textContent;
-
-    const emptyEquation = equation.length === 0;
     
-    if(!emptyEquation && isAnswerDisplayed === false && isOperatorCurrentInput === false && isDecimalCurrentInput === false){
+    if(isAnswerDisplayed === false && isOperatorCurrentInput === false && isDecimalCurrentInput === false){
         pushNumbersToEquation();
         
         outputDisplay.textContent += currentInput + "=";
