@@ -254,11 +254,11 @@ function add(){
     let answer = document.createTextNode(`${inputDisplay.textContent}`);
     let prevResult = resultHistory.firstChild;
 
-    const newResult = document.createElement("div");
+    const newResultDiv = document.createElement("div");
     const equationDiv = document.createElement("div");
     const answerDiv = document.createElement("div");
 
-    newResult.classList.add("result-item");
+    newResultDiv.classList.add("result-item");
 
     equationDiv.classList.add("result-equation");
     equationDiv.appendChild(finalEquation);
@@ -267,6 +267,6 @@ function add(){
     answerDiv.appendChild(answer);
 
     resultHistory.insertBefore(newResult,prevResult);
-    newResult.append(equationDiv,answerDiv);
+    newResultDiv.append(equationDiv,answerDiv);
 
   };
