@@ -266,7 +266,7 @@ function add(){
     answerDiv.classList.add("result-answer");
     answerDiv.appendChild(answer);
 
-    resultHistory.insertBefore(newResult,prevResult);
+    resultHistory.insertBefore(newResultDiv,prevResult);
     newResultDiv.append(equationDiv,answerDiv);
 
   };
