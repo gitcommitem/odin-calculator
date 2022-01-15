@@ -183,10 +183,10 @@ function pemdas(){
       const hasMinus = equation.indexOf("-") !== -1;
 
       //Run math operations using PEMDAS logic
-      if(hasMultiply && indexOfMultiply < indexOfDivide){
+      if(hasMultiply && indexOfMultiply < indexOfDivide || hasMultiply && hasAdd || hasMultiply && hasMinus){
         multiply();
       }
-      else if(hasDivide && indexOfDivide < indexOfMultiply){
+      else if(hasDivide && indexOfDivide < indexOfMultiply || hasDivide && hasAdd || hasDivide && hasMinus){
         divide();
       }
       else if(hasAdd && indexOfAdd < indexOfMinus){
